@@ -19,6 +19,27 @@ function show(id) {
   document.getElementById(id).classList.remove("hidden");
 }
 
+function applyTheme(type) {
+  document.body.classList.remove(
+    "theme-birthday",
+    "theme-festival",
+    "theme-achievement",
+  );
+
+  if (!type) return;
+
+  const map = {
+    Birthday: "theme-birthday",
+    Festival: "theme-festival",
+    Achievement: "theme-achievement",
+  };
+
+  const themeClass = map[type];
+  if (themeClass) {
+    document.body.classList.add(themeClass);
+  }
+}
+
 /* ======================
    DOM READY
 ====================== */
@@ -34,6 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (params.has("name") && params.has("msg")) {
     const name = params.get("name");
     const msg = params.get("msg");
+    const type = params.get("type") || "Birthday";
+    applyTheme(type);
 
     document.getElementById("resultName").innerText = name;
     document.getElementById("resultMessage").innerText = msg;
@@ -69,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".card").forEach((card) => {
     card.addEventListener("click", () => {
       selectedType = card.dataset.type;
-      console.log("🎉 Type:", selectedType);
+      applyTheme(selectedType);
       show("personalize");
       document.getElementById("typeTitle").innerText =
         selectedType + " Celebration";

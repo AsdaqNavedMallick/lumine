@@ -18,11 +18,25 @@ body {
   text-align: center;
   z-index: 1;
 }
+@keyframes glow {
+  0%,
+  100% {
+    text-shadow: 0 0 10px rgba(255, 211, 105, 0.25);
+  }
+  50% {
+    text-shadow: 0 0 18px rgba(255, 211, 105, 0.45);
+  }
+}
+
+.brand {
+  animation: glow 3s ease-in-out infinite;
+}
 
 .brand {
   font-size: 3.5rem;
   letter-spacing: 6px;
   margin-bottom: 15px;
+  text-shadow: 0 0 12px rgba(255, 211, 105, 0.25);
 }
 
 .tagline {
@@ -42,9 +56,14 @@ body {
   transition: all 0.3s ease;
 }
 
-.cta:hover {
-  background: #ffd369;
-  transform: scale(1.05);
+.card:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-10px) scale(1.07);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+.cta:active {
+  transform: scale(0.97);
 }
 
 .hidden {
@@ -146,4 +165,62 @@ textarea {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+/* Screen transition */
+.container {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
+}
+
+.container.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+#resultName {
+  animation: riseIn 0.6s ease forwards;
+}
+
+#resultMessage {
+  opacity: 0;
+  animation: fadeIn 0.6s ease forwards;
+  animation-delay: 0.4s;
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+/* ======================
+   THEMES
+====================== */
+
+/* Birthday */
+.theme-birthday {
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+}
+
+/* Festival */
+.theme-festival {
+  background: linear-gradient(135deg, #f7971e, #ffd200);
+}
+
+/* Achievement */
+.theme-achievement {
+  background: linear-gradient(135deg, #11998e, #38ef7d);
 }
