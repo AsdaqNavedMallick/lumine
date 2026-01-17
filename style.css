@@ -1,0 +1,149 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  color: white;
+  overflow: hidden;
+}
+
+.container {
+  position: absolute;
+  inset: 0;
+  text-align: center;
+  z-index: 1;
+}
+
+.brand {
+  font-size: 3.5rem;
+  letter-spacing: 6px;
+  margin-bottom: 15px;
+}
+
+.tagline {
+  font-size: 1.1rem;
+  opacity: 0.85;
+  margin-bottom: 30px;
+}
+
+.cta {
+  padding: 14px 32px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  background: white;
+  color: #203a43;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta:hover {
+  background: #ffd369;
+  transform: scale(1.05);
+}
+
+.hidden {
+  display: none !important;
+}
+
+.subtitle {
+  font-size: 2rem;
+  margin-bottom: 30px;
+}
+
+.cards {
+  display: flex;
+  gap: 25px;
+  justify-content: center;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.1);
+  width: 160px;
+  height: 160px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.card span {
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+.card:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-8px) scale(1.05);
+}
+
+input,
+textarea {
+  width: 320px;
+  padding: 14px;
+  margin: 12px 0;
+  border-radius: 12px;
+  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  font-size: 1rem;
+  outline: none;
+}
+
+textarea {
+  height: 100px;
+  resize: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.luxury {
+  margin-top: 25px;
+  display: block;
+  font-size: 0.85rem;
+  opacity: 0.6;
+  letter-spacing: 2px;
+}
+
+input,
+textarea {
+  margin-bottom: 18px;
+}
+
+#fireworks {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at top,
+    rgba(255, 255, 255, 0.05),
+    transparent 70%
+  );
+}
+
+.hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

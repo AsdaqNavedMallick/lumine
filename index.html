@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>LUMINE — Create Digital Celebrations</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <!-- CANVAS -->
+    <canvas id="fireworks"></canvas>
+
+    <!-- HOME -->
+    <div class="container hero" id="home">
+      <h1 class="brand">LUMINE</h1>
+      <p class="tagline">When words aren’t enough, celebrate.</p>
+      <button class="cta" id="startBtn">Create Celebration</button>
+    </div>
+
+    <!-- CELEBRATION TYPE -->
+    <div class="container hidden" id="celebrations">
+      <h2 class="subtitle">Choose a Celebration</h2>
+
+      <div class="cards">
+        <div class="card" data-type="Birthday">🎂<span>Birthday</span></div>
+        <div class="card" data-type="Festival">🎉<span>Festival</span></div>
+        <div class="card" data-type="Achievement">
+          🏆<span>Achievement</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PERSONALIZATION -->
+    <div class="container hidden" id="personalize">
+      <h2 class="subtitle" id="typeTitle"></h2>
+
+      <div class="form">
+        <input type="text" id="nameInput" placeholder="Enter their name" />
+
+        <textarea
+          id="messageInput"
+          placeholder="Write a message from your heart"
+        ></textarea>
+
+        <button class="cta" id="generateBtn">Generate Celebration</button>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="container hidden" id="result">
+      <h1 class="brand" id="resultName"></h1>
+      <p class="tagline" id="resultMessage"></p>
+      <button class="cta" id="copyBtn">Copy Link</button>
+      <span class="luxury">— Created with LUMINE</span>
+    </div>
+
+    <script src="./fireworks.js"></script>
+  </body>
+</html>
