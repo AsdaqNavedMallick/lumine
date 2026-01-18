@@ -1,6 +1,30 @@
 console.log("🔥 JS loaded");
 
 /* ======================
+   THEMES
+====================== */
+const THEMES = {
+  Birthday: {
+    class: "theme-birthday",
+    accent: "#ff7eb3",
+    particles: ["#ffd369", "#ff9f1c", "#ff7eb3"],
+    emoji: "🎂",
+  },
+  Festival: {
+    class: "theme-festival",
+    accent: "#ffd200",
+    particles: ["#ffd200", "#f7971e", "#ff9f1c"],
+    emoji: "🎉",
+  },
+  Achievement: {
+    class: "theme-achievement",
+    accent: "#38ef7d",
+    particles: ["#38ef7d", "#11998e", "#4cc9f0"],
+    emoji: "🏆",
+  },
+};
+
+/* ======================
    STATE
 ====================== */
 let selectedType = "";
@@ -20,30 +44,19 @@ function show(id) {
 }
 
 function applyTheme(type) {
-  document.body.classList.remove(
-    "theme-birthday",
-    "theme-festival",
-    "theme-achievement",
-  );
+  const theme = THEMES[type];
+  if (!theme) return;
 
-  if (!type) return;
+  Object.values(THEMES).forEach((t) => document.body.classList.remove(t.class));
 
-  const map = {
-    Birthday: "theme-birthday",
-    Festival: "theme-festival",
-    Achievement: "theme-achievement",
-  };
-
-  const themeClass = map[type];
-  if (themeClass) {
-    document.body.classList.add(themeClass);
-  }
+  document.body.classList.add(theme.class);
+  document.documentElement.style.setProperty("--accent", theme.accent);
+  window.currentParticleColors = theme.particles;
 }
 
 /* ======================
    DOM READY
 ====================== */
-
 document.addEventListener("DOMContentLoaded", () => {
   let autoLoaded = false;
 
@@ -56,39 +69,31 @@ document.addEventListener("DOMContentLoaded", () => {
     const name = params.get("name");
     const msg = params.get("msg");
     const type = params.get("type") || "Birthday";
+
     applyTheme(type);
 
-    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultName").innerText =
+      (THEMES[type]?.emoji || "✨") + " " + name;
     document.getElementById("resultMessage").innerText = msg;
 
     show("result");
-
-    // viewer should not see copy button
     document.getElementById("copyBtn").style.display = "none";
 
     autoLoaded = true;
   }
 
-  /* ======================
-     NORMAL ENTRY (ONLY IF NOT AUTOLOADED)
-  ====================== */
   if (!autoLoaded) {
     show("home");
   }
-
-  // 👇 event listeners + canvas code continues below
 
   /* ======================
      EVENT LISTENERS
   ====================== */
 
-  // Start button
   document.getElementById("startBtn").addEventListener("click", () => {
-    console.log("➡️ Start clicked");
     show("celebrations");
   });
 
-  // Celebration cards
   document.querySelectorAll(".card").forEach((card) => {
     card.addEventListener("click", () => {
       selectedType = card.dataset.type;
@@ -99,7 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Generate button
   document.getElementById("generateBtn").addEventListener("click", () => {
     const name = document.getElementById("nameInput").value.trim();
     const msg = document.getElementById("messageInput").value.trim();
@@ -109,16 +113,25 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
+    if (!selectedType) {
+      selectedType = "Birthday";
+      applyTheme(selectedType);
+    }
+
+    const theme = THEMES[selectedType];
+
     const params = new URLSearchParams({
       type: selectedType,
       name,
       msg,
     });
-
     window.history.pushState({}, "", "?" + params.toString());
 
-    document.getElementById("resultName").innerText = name;
+    document.getElementById("resultName").innerText =
+      (theme.emoji || "✨") + " " + name;
     document.getElementById("resultMessage").innerText = msg;
+
+    document.getElementById("copyBtn").style.display = "inline-block";
     show("result");
   });
 
@@ -129,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   /* ======================
-     CANVAS (UNCHANGED)
+     CANVAS
   ====================== */
 
   const canvas = document.getElementById("fireworks");
@@ -153,9 +166,15 @@ document.addEventListener("DOMContentLoaded", () => {
       this.vy = Math.random() * 0.4 + 0.1;
       this.vx = (Math.random() - 0.5) * 0.3;
       this.life = Math.random() * 300 + 200;
-      this.color = ["#ffd369", "#ff9f1c", "#c77dff", "#4cc9f0"][
-        Math.floor(Math.random() * 4)
+
+      const palette = window.currentParticleColors || [
+        "#ffd369",
+        "#ff9f1c",
+        "#c77dff",
+        "#4cc9f0",
       ];
+
+      this.color = palette[Math.floor(Math.random() * palette.length)];
     }
     update() {
       this.y -= this.vy;

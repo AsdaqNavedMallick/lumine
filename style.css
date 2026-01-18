@@ -5,19 +5,44 @@
   font-family: "Segoe UI", sans-serif;
 }
 
+:root {
+  --accent: #ffd369;
+}
+
 body {
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
   color: white;
   overflow: hidden;
+  background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+  transition: background 0.6s ease;
 }
+
+/* ======================
+   CONTAINERS
+====================== */
 
 .container {
   position: absolute;
   inset: 0;
   text-align: center;
   z-index: 1;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 0.5s ease,
+    transform 0.5s ease;
 }
+
+.container.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
+}
+
+/* ======================
+   TYPOGRAPHY
+====================== */
+
 @keyframes glow {
   0%,
   100% {
@@ -29,14 +54,11 @@ body {
 }
 
 .brand {
-  animation: glow 3s ease-in-out infinite;
-}
-
-.brand {
   font-size: 3.5rem;
   letter-spacing: 6px;
   margin-bottom: 15px;
-  text-shadow: 0 0 12px rgba(255, 211, 105, 0.25);
+  animation: glow 3s ease-in-out infinite;
+  text-shadow: 0 0 14px var(--accent);
 }
 
 .tagline {
@@ -45,35 +67,32 @@ body {
   margin-bottom: 30px;
 }
 
+/* ======================
+   BUTTONS
+====================== */
+
 .cta {
-  padding: 14px 32px;
-  font-size: 1rem;
-  border: none;
-  border-radius: 30px;
   background: white;
   color: #203a43;
+  border: 2px solid var(--accent);
+  padding: 14px 32px;
+  font-size: 1rem;
+  border-radius: 30px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
-.card:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: translateY(-10px) scale(1.07);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+.cta:hover {
+  background: var(--accent);
 }
 
 .cta:active {
   transform: scale(0.97);
 }
 
-.hidden {
-  display: none !important;
-}
-
-.subtitle {
-  font-size: 2rem;
-  margin-bottom: 30px;
-}
+/* ======================
+   CARDS
+====================== */
 
 .cards {
   display: flex;
@@ -95,21 +114,25 @@ body {
   transition: all 0.3s ease;
 }
 
-.card span {
-  margin-top: 10px;
-  font-size: 1rem;
-}
-
 .card:hover {
   background: rgba(255, 255, 255, 0.25);
   transform: translateY(-8px) scale(1.05);
 }
 
+.card span {
+  margin-top: 10px;
+  font-size: 1rem;
+}
+
+/* ======================
+   FORMS
+====================== */
+
 input,
 textarea {
   width: 320px;
   padding: 14px;
-  margin: 12px 0;
+  margin-bottom: 18px;
   border-radius: 12px;
   border: none;
   background: rgba(255, 255, 255, 0.12);
@@ -128,58 +151,10 @@ textarea::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
 
-.luxury {
-  margin-top: 25px;
-  display: block;
-  font-size: 0.85rem;
-  opacity: 0.6;
-  letter-spacing: 2px;
-}
+/* ======================
+   RESULT ANIMATION
+====================== */
 
-input,
-textarea {
-  margin-bottom: 18px;
-}
-
-#fireworks {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: radial-gradient(
-    circle at top,
-    rgba(255, 255, 255, 0.05),
-    transparent 70%
-  );
-}
-
-.hero {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-/* Screen transition */
-.container {
-  opacity: 1;
-  transform: translateY(0);
-  transition:
-    opacity 0.5s ease,
-    transform 0.5s ease;
-}
-
-.container.hidden {
-  opacity: 0;
-  transform: translateY(10px);
-  pointer-events: none;
-}
 #resultName {
   animation: riseIn 0.6s ease forwards;
 }
@@ -206,21 +181,35 @@ textarea {
     opacity: 1;
   }
 }
+
+/* ======================
+   CANVAS
+====================== */
+
+#fireworks {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at top,
+    rgba(255, 255, 255, 0.05),
+    transparent 70%
+  );
+}
+
 /* ======================
    THEMES
 ====================== */
 
-/* Birthday */
 .theme-birthday {
   background: linear-gradient(135deg, #ff758c, #ff7eb3);
 }
 
-/* Festival */
 .theme-festival {
   background: linear-gradient(135deg, #f7971e, #ffd200);
 }
 
-/* Achievement */
 .theme-achievement {
   background: linear-gradient(135deg, #11998e, #38ef7d);
 }
