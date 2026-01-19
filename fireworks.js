@@ -52,6 +52,10 @@ function applyTheme(type) {
   document.body.classList.add(theme.class);
   document.documentElement.style.setProperty("--accent", theme.accent);
   window.currentParticleColors = theme.particles;
+  document.documentElement.style.setProperty(
+    "--card-glow",
+    theme.accent + "80",
+  );
 }
 
 /* ======================
@@ -96,11 +100,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll(".card").forEach((card) => {
     card.addEventListener("click", () => {
+      document
+        .querySelectorAll(".card")
+        .forEach((c) => c.classList.remove("selected"));
+
+      card.classList.add("selected");
+
       selectedType = card.dataset.type;
       applyTheme(selectedType);
-      show("personalize");
-      document.getElementById("typeTitle").innerText =
-        selectedType + " Celebration";
+
+      setTimeout(() => {
+        show("personalize");
+        document.getElementById("typeTitle").innerText =
+          selectedType + " Celebration";
+      }, 180); // lets animation play
     });
   });
 

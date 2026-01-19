@@ -7,6 +7,7 @@
 
 :root {
   --accent: #ffd369;
+  --card-glow: rgba(255, 255, 255, 0.25);
 }
 
 body {
@@ -31,12 +32,23 @@ body {
   transition:
     opacity 0.5s ease,
     transform 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .container.hidden {
   opacity: 0;
   transform: translateY(10px);
   pointer-events: none;
+}
+
+#personalize.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ======================
@@ -68,29 +80,6 @@ body {
 }
 
 /* ======================
-   BUTTONS
-====================== */
-
-.cta {
-  background: white;
-  color: #203a43;
-  border: 2px solid var(--accent);
-  padding: 14px 32px;
-  font-size: 1rem;
-  border-radius: 30px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.cta:hover {
-  background: var(--accent);
-}
-
-.cta:active {
-  transform: scale(0.97);
-}
-
-/* ======================
    CARDS
 ====================== */
 
@@ -98,6 +87,7 @@ body {
   display: flex;
   gap: 25px;
   justify-content: center;
+  margin-top: 50px;
 }
 
 .card {
@@ -151,12 +141,22 @@ textarea::placeholder {
   color: rgba(255, 255, 255, 0.6);
 }
 
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px; /* controls spacing between input, textarea, button */
+  margin-top: 30px;
+}
+
 /* ======================
    RESULT ANIMATION
 ====================== */
 
 #resultName {
   animation: riseIn 0.6s ease forwards;
+  font-size: 3rem;
+  margin-bottom: 10px;
 }
 
 #resultMessage {
@@ -180,6 +180,22 @@ textarea::placeholder {
   to {
     opacity: 1;
   }
+}
+
+@keyframes cardSelect {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.card.selected {
+  animation: cardSelect 0.35s ease;
 }
 
 /* ======================
@@ -212,4 +228,128 @@ textarea::placeholder {
 
 .theme-achievement {
   background: linear-gradient(135deg, #11998e, #38ef7d);
+}
+
+.form input,
+.form textarea,
+.form .cta {
+  width: 340px; /* choose one width */
+  max-width: 90%;
+}
+
+@media (max-width: 768px) {
+  .brand {
+    font-size: 2.6rem;
+    letter-spacing: 4px;
+  }
+
+  .subtitle {
+    font-size: 1.6rem;
+  }
+
+  .cards {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .card {
+    width: 85%;
+    height: 140px;
+  }
+
+  .form input,
+  .form textarea,
+  .form .cta {
+    width: 90%;
+  }
+
+  .form {
+    gap: 16px;
+  }
+}
+
+/* ======================
+   CARDS (EDGE GLOW)
+====================== */
+
+.card {
+  background: rgba(255, 255, 255, 0.12);
+  width: 160px;
+  height: 160px;
+  border-radius: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 2.2rem;
+  cursor: pointer;
+
+  border: 2px solid transparent;
+
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.card:hover {
+  background: var(--accent);
+  transform: translateY(-10px) scale(1.06);
+
+  box-shadow:
+    0 0 18px var(--accent),
+    0 0 40px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+.card:hover span {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+.card.selected {
+  background: var(--accent);
+  transform: translateY(-10px) scale(1.06);
+
+  box-shadow:
+    0 0 18px var(--accent),
+    0 0 40px color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+/* ======================
+   PRIMARY CTA (FIXED)
+====================== */
+
+button.cta {
+  appearance: none;
+  -webkit-appearance: none;
+
+  background: white;
+  color: #203a43;
+
+  border: 2px solid var(--accent);
+  border-radius: 999px;
+
+  padding: 16px 36px;
+  font-size: 1rem;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  position: relative;
+  z-index: 2;
+}
+
+button.cta:hover {
+  background: var(--accent);
+  color: #203a43;
+
+  box-shadow:
+    0 0 14px var(--accent),
+    0 0 32px var(--accent),
+    0 0 64px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+
+button.cta:active {
+  transform: scale(0.96);
 }
