@@ -117,6 +117,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  let burstParticles = [];
+
   document.getElementById("generateBtn").addEventListener("click", () => {
     const name = document.getElementById("nameInput").value.trim();
     const msg = document.getElementById("messageInput").value.trim();
@@ -146,6 +148,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("copyBtn").style.display = "inline-block";
     show("result");
+
+    // 🎉 Celebration burst
+    setTimeout(() => {
+      burst(canvas.width / 2, canvas.height / 2, 120);
+    }, 150);
   });
 
   document.getElementById("copyBtn").addEventListener("click", () => {
@@ -158,6 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
      CANVAS
   ====================== */
 
+  // canvas setup
   const canvas = document.getElementById("fireworks");
   const ctx = canvas.getContext("2d");
 
@@ -168,16 +176,23 @@ document.addEventListener("DOMContentLoaded", () => {
   resize();
   window.addEventListener("resize", resize);
 
+  // Particle class
   class Particle {
-    constructor() {
+    constructor(isBurst = false) {
+      this.isBurst = isBurst;
       this.reset();
     }
+
     reset() {
+      if (this.isBurst) return;
+
       this.x = Math.random() * canvas.width;
       this.y = canvas.height + Math.random() * 200;
+
       this.r = Math.random() * 2 + 1;
       this.vy = Math.random() * 0.4 + 0.1;
       this.vx = (Math.random() - 0.5) * 0.3;
+
       this.life = Math.random() * 300 + 200;
 
       const palette = window.currentParticleColors || [
@@ -189,12 +204,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
       this.color = palette[Math.floor(Math.random() * palette.length)];
     }
+
     update() {
-      this.y -= this.vy;
       this.x += this.vx;
+      this.y += this.vy;
       this.life--;
-      if (this.y < -10 || this.life <= 0) this.reset();
+
+      // gravity for burst
+      if (this.isBurst) {
+        this.vy += 0.06;
+      }
+
+      // ambient reset
+      if (!this.isBurst && this.life <= 0) {
+        this.reset();
+      }
     }
+
     draw() {
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
@@ -206,15 +232,48 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // particle storage
   const particles = Array.from({ length: 70 }, () => new Particle());
 
+  // ✅ ADD burst()
+  function burst(x, y, count = 120) {
+    for (let i = 0; i < count; i++) {
+      burstParticles.push({
+        x,
+        y,
+        vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 4 + 2),
+        vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 4 + 2),
+        life: Math.random() * 60 + 40,
+        color: (window.currentParticleColors || [
+          "#ffd369",
+          "#ff9f1c",
+          "#c77dff",
+          "#4cc9f0",
+        ])[Math.floor(Math.random() * 4)],
+      });
+    }
+  }
+
+  // animation loop
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach((p) => {
-      p.update();
-      p.draw();
+
+    // 🎉 Draw burst particles
+    burstParticles.forEach((p) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.vy += 0.05; // gravity
+      p.life--;
+
+      ctx.fillStyle = p.color;
+      ctx.fillRect(p.x, p.y, 3, 3);
     });
+
+    // remove dead particles
+    burstParticles = burstParticles.filter((p) => p.life > 0);
+
     requestAnimationFrame(animate);
   }
+
   animate();
 });
