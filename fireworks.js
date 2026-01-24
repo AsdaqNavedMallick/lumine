@@ -235,45 +235,88 @@ document.addEventListener("DOMContentLoaded", () => {
   // particle storage
   const particles = Array.from({ length: 70 }, () => new Particle());
 
-  // ✅ ADD burst()
+  // ✅ burst()
   function burst(x, y, count = 120) {
     for (let i = 0; i < count; i++) {
+      // 🎨 pick base theme colors
+      const baseColors = window.currentParticleColors || [
+        "#ffd369",
+        "#ff9f1c",
+        "#c77dff",
+        "#4cc9f0",
+      ];
+
+      const base = baseColors[Math.floor(Math.random() * baseColors.length)];
+
+      // ✨ mix with white so it contrasts with background
+      const color = `color-mix(in srgb, ${base} 70%, white)`;
+
+      // 💥 push particle
       burstParticles.push({
         x,
         y,
         vx: Math.cos(Math.random() * Math.PI * 2) * (Math.random() * 4 + 2),
         vy: Math.sin(Math.random() * Math.PI * 2) * (Math.random() * 4 + 2),
         life: Math.random() * 60 + 40,
-        color: (window.currentParticleColors || [
-          "#ffd369",
-          "#ff9f1c",
-          "#c77dff",
-          "#4cc9f0",
-        ])[Math.floor(Math.random() * 4)],
+        color,
       });
     }
   }
+  // ambient particles
+  let ambientParticles = [];
+  // ambient particles loop
+  function createAmbientParticle() {
+    return {
+      x: Math.random() * canvas.width,
+      y: canvas.height + Math.random() * 100,
+      vx: (Math.random() - 0.5) * 0.2,
+      vy: -Math.random() * 0.6 - 0.2,
+      life: Math.random() * 400 + 200,
+      size: Math.random() * 2 + 1,
+      color: (window.currentParticleColors || [
+        "#ffd369",
+        "#ff9f1c",
+        "#c77dff",
+        "#4cc9f0",
+      ])[Math.floor(Math.random() * 4)],
+    };
+  }
+  ambientParticles = Array.from({ length: 50 }, createAmbientParticle);
 
   // animation loop
   function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // 🎉 Draw burst particles
+    // 🌊 Ambient particles
+    ambientParticles.forEach((p) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.life--;
+
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      ctx.fill();
+
+      if (p.y < -20 || p.life <= 0) {
+        Object.assign(p, createAmbientParticle());
+      }
+    });
+
+    // 💥 Burst particles
     burstParticles.forEach((p) => {
       p.x += p.vx;
       p.y += p.vy;
-      p.vy += 0.05; // gravity
+      p.vy += 0.05;
       p.life--;
 
       ctx.fillStyle = p.color;
       ctx.fillRect(p.x, p.y, 3, 3);
     });
 
-    // remove dead particles
     burstParticles = burstParticles.filter((p) => p.life > 0);
 
     requestAnimationFrame(animate);
   }
-
   animate();
 });
